@@ -13,6 +13,26 @@ The command launches Command Prompt, which in turn spawns Notepad and waits for 
 
 Binaries are available in [Releases](https://github.com/valinet/rt/releases).
 
+There usually are 2 versions included:
+
+* rt.exe - standard executable
+
+* rts.exe - standard executable, but a sleep happens before the executable is launched again; to adjust the sleep interval (the default is 999ms which is approximately 1 second), launch the script "adjsleep.ps1" from a command prompt window like this:
+
+  ```
+  powershell -ExecutionPolicy Bypass -File adjsleep.ps1 ..\x64\Release\rts.exe 500 0x6D5
+  ```
+
+  * Argument 1 ($path) [`..\x64\Release\rts.exe`] is the path to the rt executable with sleep
+
+  * Argument 2 ($value) [`500`] is the new value (how long to sleep before relaunching)
+
+  * Argument 3 ($offset) [`0x6D5`] is offset in the binary where the value is value that was supplied at compile time is written. `0x6D5` is valid for version 1.0.0.1 of the application.
+
+    To determine this value, open the executable file in [HxD](https://mh-nexus.de/en/hxd/), click the Search menu - Find, choose "Hex-values", type "e703", for search direction choose "All" and click "Search all". If done correctly, a single entry will be shown in the bottom part of the window. The value you are interested in (the offset to supply to the script) is available in the "Offset" column. Usually, you can find the right value in instructions published with each release on its page.
+
+  To reproduce rts.exe when compiling, uncomment the line (remove leading `//`) containing `Sleep(999);` in `rt.c` (use Find to quickly locate it).
+
 ## Compiling
 
 The following prerequisites are necessary in order to compile this project:

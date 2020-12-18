@@ -198,6 +198,7 @@ int WINAPI wWinMain(
 		{
 			return 0xC;
 		}
+		//Sleep(999);
 		if (!VirtualProtect(
 			pRO,
 			sizeof(ParamsReadOnly),
